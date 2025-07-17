@@ -1,5 +1,4 @@
 import prisma from "@repo/db/client";
-import type { OnRampTransaction } from "@prisma/client";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
@@ -21,12 +20,12 @@ async function getBalance() {
 
 async function getOnRampTransactions() {
     const session = await getServerSession(authOptions);
-    const txns: OnRampTransaction[] = await prisma.onRampTransaction.findMany({
+    const txns = await prisma.onRampTransaction.findMany({
         where: {
             userId: Number(session?.user?.id)
         }
     });
-    return txns.map(t => ({
+    return txns.map((t: any) => ({
         time: t.startTime,
         amount: t.amount,
         status: t.status,
